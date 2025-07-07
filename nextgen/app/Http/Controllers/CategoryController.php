@@ -7,10 +7,14 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public function index()
-    {
-        return response()->json(Category::with('products')->get());
-    }
+public function index()
+{
+    $categories = Category::where('Status', 1)
+        ->select('CategoryID', 'Name', 'Image') 
+        ->get();
+
+    return response()->json($categories);
+}
 
     public function show($id)
     {

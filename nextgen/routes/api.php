@@ -27,10 +27,14 @@ Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
 // Product routes
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/search', [ProductController::class, 'search']);
+Route::get('/products/hidden', [ProductController::class, 'hidden']);
 Route::get('/products/detail/{id}', [ProductController::class, 'show']);
 Route::post('/products/add', [ProductController::class, 'store']);
 Route::put('/products/update/{id}', [ProductController::class, 'update']);
 Route::delete('/products/{id}', [ProductController::class, 'destroy']);
+Route::put('/products/restore/{id}', [ProductController::class, 'restore']);
+
+
 
 // ProductVariant routes
 Route::get('/variants', [ProductVariantController::class, 'index']);

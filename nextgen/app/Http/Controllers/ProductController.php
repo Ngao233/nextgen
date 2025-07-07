@@ -7,17 +7,36 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index()
-    {
-        return response()->json(Product::with('category', 'variants.attributes.attribute')->get());
+public function index()
+{
+    return response()->json(
+        Product::where('Status', 1) 
+               ->whereHas('category', function ($query) {
+                   $query->where('Status', 1); 
+               })
+               ->with('category', 'variants.attributes.attribute')
+               ->get()
+    );
+}
+
+
+public function show($id)
+{
+    $product = Product::where('ProductID', $id)
+                      ->where('Status', 1) // Sản phẩm đang bật
+                      ->whereHas('category', function ($query) {
+                          $query->where('Status', 1); // Danh mục cũng đang bật
+                      })
+                      ->with('category', 'variants.attributes.attribute')
+                      ->first();
+
+    if (!$product) {
+        return response()->json(['message' => 'Không tìm thấy sản phẩm'], 404);
     }
 
-    public function show($id)
-    {
-        $product = Product::with('category', 'variants.attributes.attribute')->find($id);
-        if (!$product) return response()->json(['message' => 'Không tìm thấy sản phẩm'], 404);
-        return response()->json($product);
-    }
+    return response()->json($product);
+}
+
 
     public function store(Request $request)
     {
@@ -119,4 +138,24 @@ class ProductController extends Controller
 
         return response()->json(['message' => 'Sản phẩm đã được phục hồi!']);
     }
+
+public function hidden()
+{
+    $products = Product::where('Status', 0)
+        ->whereHas('category', function ($query) {
+            $query->where('Status', 1);
+        })
+        ->with('category', 'variants.attributes.attribute')
+        ->get();
+
+    if ($products->isEmpty()) {
+        return response()->json([
+            'message' => 'Không có sản phẩm nào đang bị ẩn.'
+        ], 200);
+    }
+
+    return response()->json($products);
+}
+
+
 }
