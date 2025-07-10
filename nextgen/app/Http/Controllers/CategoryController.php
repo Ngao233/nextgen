@@ -14,7 +14,7 @@ public function index()
         ->get();
 
     return response()->json($categories);
-}
+}                                                               
 
     public function show($id)
     {

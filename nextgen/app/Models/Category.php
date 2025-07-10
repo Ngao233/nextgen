@@ -10,7 +10,7 @@ protected $table = 'categories';
     protected $primaryKey = 'CategoryID';
     public $timestamps = false;
 
-    protected $fillable = ['Name', 'Description', 'Create_at', 'Update_at'];
+    protected $fillable = ['Name', 'Image', 'Description', 'Create_at', 'Update_at'];
 
     public function products()
     {
