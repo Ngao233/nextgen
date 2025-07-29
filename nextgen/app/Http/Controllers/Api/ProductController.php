@@ -54,8 +54,7 @@ class ProductController extends Controller
                 'Description' => 'nullable|string',
                 'base_price' => 'required|numeric|min:0',
                 'Status' => 'nullable|boolean',
-                'Stock' => 'nullable|integer|min:0',
-                'Image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate image file
+                'Image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
 
             if ($validator->fails()) {
@@ -66,23 +65,21 @@ class ProductController extends Controller
                 ], 422);
             }
 
-            // Create new product data
+            // Create new product
             $productData = $validator->validated();
             $productData['Create_at'] = now();
             $productData['Update_at'] = now();
 
             // Handle image upload if present
-            if ($request->hasFile('image_file')) {
-                $imagePath = $request->file('image_file')->store('products', 'public');
-                $productData['Image'] = $imagePath; // Save the image path
-            } else {
-                $productData['Image'] = null; // Ensure Image key exists
+            if ($request->hasFile('Image')) {
+                $imagePath = $request->file('Image')->store('products', 'public');
+                $productData['Image'] = $imagePath;
             }
 
             $product = Product::create($productData);
 
             // Load product with relationships
-            $product->load(['category', 'variants.attributes.attribute']);
+            $product->load(['category']);
 
             return response()->json([
                 'success' => true, 
@@ -106,7 +103,7 @@ class ProductController extends Controller
     public function show($id)
     {
         try {
-            $product = Product::with(['category', 'variants.attributes.attribute', 'reviews'])
+            $product = Product::with(['category', 'variants.attributes'])
                 ->find($id);
 
             if (!$product) {
@@ -121,7 +118,6 @@ class ProductController extends Controller
                 'data' => $product,
                 'message' => 'Product retrieved successfully'
             ]);
-
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -149,21 +145,14 @@ class ProductController extends Controller
                 ], 404);
             }
 
-            // Validate dữ liệu đầu vào
+            // Validate input data
             $validator = Validator::make($request->all(), [
                 'CategoryID' => 'sometimes|integer|exists:categories,CategoryID',
                 'Name' => 'sometimes|string|max:255',
                 'Description' => 'nullable|string',
-                'Image' => 'nullable|string|max:500',
                 'base_price' => 'sometimes|numeric|min:0',
                 'Status' => 'nullable|boolean',
-                'variants' => 'nullable|array',
-                'variants.*.ProductID' => 'nullable|integer|exists:product_variants,ProductVariantID',
-                'variants.*.Price' => 'required_with:variants|numeric|min:0',
-                'variants.*.Stock' => 'required_with:variants|integer|min:0',
-                'variants.*.attributes' => 'nullable|array',
-                'variants.*.attributes.*.attribute_id' => 'required_with:variants.*.attributes|integer|exists:attributes,AttributeID',
-                'variants.*.attributes.*.value' => 'required_with:variants.*.attributes|string|max:255',
+                'Image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
 
             if ($validator->fails()) {
@@ -174,61 +163,32 @@ class ProductController extends Controller
                 ], 422);
             }
 
-            // Cập nhật sản phẩm
+            // Prepare updated data
             $productData = $validator->validated();
             $productData['Update_at'] = now();
 
-            // Xử lý upload ảnh mới nếu có
-            if ($request->hasFile('image_file')) {
-                // Xóa ảnh cũ nếu có
+            // Handle image upload if present
+            if ($request->hasFile('Image')) {
                 if ($product->Image && Storage::disk('public')->exists($product->Image)) {
                     Storage::disk('public')->delete($product->Image);
                 }
-                
-                $imagePath = $request->file('image_file')->store('products', 'public');
+                $imagePath = $request->file('Image')->store('products', 'public');
                 $productData['Image'] = $imagePath;
+            } else {
+                unset($productData['Image']); // Giữ nguyên hình ảnh cũ nếu không có hình ảnh mới
             }
 
+            // Cập nhật thông tin sản phẩm
             $product->update($productData);
 
-            // Xử lý variants nếu có
-            if ($request->has('variants') && is_array($request->variants)) {
-                // Xóa tất cả variants cũ
-                $product->variants()->delete();
-                
-                // Tạo variants mới
-                foreach ($request->variants as $variantData) {
-                    $variant = $product->variants()->create([
-                        'ProductID' => $product->ProductID,
-                        'Sku' => $variantData['Sku'] ?? uniqid('SKU-'),
-                        'Price' => $variantData['Price'],
-                        'Stock' => $variantData['Stock'] ?? 0,
-                        'Create_at' => now(),
-                        'Update_at' => now()
-                    ]);
-
-                    // Xử lý attributes cho variant
-                    if (isset($variantData['attributes']) && is_array($variantData['attributes'])) {
-                        foreach ($variantData['attributes'] as $attrData) {
-                            $variant->attributes()->create([
-                                'ProductVariantID' => $variant->ProductVariantID,
-                                'AttributeID' => $attrData['attribute_id'],
-                                'value' => $attrData['value']
-                            ]);
-                        }
-                    }
-                }
-            }
-
-            // Load lại product với relationships
-            $product->load(['category', 'variants.attributes.attribute']);
+            // Load updated product with relationships
+            $product->load(['category']);
 
             return response()->json([
                 'success' => true, 
                 'data' => $product,
                 'message' => 'Product updated successfully'
             ]);
-
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,

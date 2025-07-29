@@ -21,7 +21,7 @@ class ProductVariantController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate(['Sku' => 'required', 'Price' => 'required']);
+        $request->validate(['Image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', 'Sku' => 'required', 'Price' => 'required']);
         $variant = ProductVariant::create($request->all());
         return response()->json($variant, 201);
     }

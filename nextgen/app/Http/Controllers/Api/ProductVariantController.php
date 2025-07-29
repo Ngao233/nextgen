@@ -11,11 +11,21 @@ class ProductVariantController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $variants = ProductVariant::with(['product', 'attributes.attribute'])->get();
-        return response()->json(['success' => true, 'data' => $variants]);
-    }
+        public function index(Request $request)
+        {
+            $productId = $request->get('ProductID');
+
+            if (!$productId) {
+                return response()->json(['success' => false, 'message' => 'ProductID không được cung cấp'], 400);
+            }
+
+            $variants = ProductVariant::where('ProductID', $productId)
+                ->with(['product', 'attributes.attribute'])
+                ->get();
+
+            return response()->json(['success' => true, 'data' => $variants]);
+        }
+
 
     /**
      * Store a newly created resource in storage.
@@ -24,6 +34,7 @@ class ProductVariantController extends Controller
     {
         $validated = $request->validate([
             'ProductID' => 'required|integer|exists:products,ProductID',
+            'Image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'Sku' => 'required|integer|unique:productvariants,Sku',
             'Price' => 'required|numeric|min:0',
             'Stock' => 'required|integer|min:0',
@@ -55,6 +66,7 @@ class ProductVariantController extends Controller
         }
         $validated = $request->validate([
             'ProductID' => 'sometimes|integer|exists:products,ProductID',
+            'Image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
             'Sku' => 'sometimes|integer|unique:productvariants,Sku,' . $id . ',ProductVariantID',
             'Price' => 'sometimes|numeric|min:0',
             'Stock' => 'sometimes|integer|min:0',

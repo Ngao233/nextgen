@@ -21,6 +21,7 @@ class ProductVariant extends Model
     protected $fillable = [
         'ProductID',
         'Sku',
+        'Image', // Thêm cột Image nếu bạn muốn lưu trữ hình ảnh
         'Price',
         'Stock',
         'created_at', // Theo SQL dump là created_at
