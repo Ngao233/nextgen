@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th7 27, 2025 lúc 03:39 PM
+-- Thời gian đã tạo: Th7 29, 2025 lúc 08:21 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -85,7 +85,8 @@ CREATE TABLE `carts` (
 --
 
 INSERT INTO `carts` (`CartID`, `UserID`, `Status`, `Create_at`, `Update_at`) VALUES
-(1, 14, 'active', '2025-07-27 13:31:20', '2025-07-27 13:31:20');
+(1, 14, 'active', '2025-07-27 13:31:20', '2025-07-27 13:31:20'),
+(2, 1, 'active', '2025-07-27 14:23:07', '2025-07-27 14:23:07');
 
 -- --------------------------------------------------------
 
@@ -109,7 +110,10 @@ CREATE TABLE `cart_items` (
 INSERT INTO `cart_items` (`CartItemID`, `CartID`, `ProductVariantID`, `Quantity`, `Create_at`, `Update_at`) VALUES
 (1, 1, 19, 3, '2025-07-27 13:31:21', '2025-07-27 07:32:36'),
 (2, 1, 3, 2, '2025-07-27 13:31:21', '2025-07-27 07:32:39'),
-(3, 1, 18, 2, '2025-07-27 07:27:08', '2025-07-27 07:32:20');
+(3, 1, 18, 2, '2025-07-27 07:27:08', '2025-07-27 07:32:20'),
+(4, 2, 18, 3, '2025-07-27 14:23:07', '2025-07-28 16:04:41'),
+(6, 2, 5, 2, '2025-07-28 16:06:40', '2025-07-28 17:11:10'),
+(7, 2, 9, 1, '2025-07-28 17:11:21', '2025-07-28 17:11:21');
 
 -- --------------------------------------------------------
 
@@ -431,7 +435,16 @@ INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `n
 (39, 'App\\Models\\User', 14, 'auth_token', '6e420249db26268ea7abbb43388392905bff1e0998842b9af748c443b33e43c4', '[\"*\"]', NULL, NULL, '2025-07-26 23:15:47', '2025-07-26 23:15:47'),
 (40, 'App\\Models\\User', 1, 'auth_token', '76a8cfa4c35f05b6159aa83e743f245761c38c24117afad49515ea1250a18aee', '[\"*\"]', NULL, NULL, '2025-07-26 23:15:59', '2025-07-26 23:15:59'),
 (41, 'App\\Models\\User', 14, 'auth_token', 'b81280faa1305bbce6efb9e1efccfc91482bccce40df11930414cfa39353e97d', '[\"*\"]', '2025-07-27 00:33:05', NULL, '2025-07-26 23:26:20', '2025-07-27 00:33:05'),
-(42, 'App\\Models\\User', 1, 'auth_token', 'daf6a90530d28a7df2b23d359563216cb711fdeb625fd02ac4733740734bd1cd', '[\"*\"]', NULL, NULL, '2025-07-27 00:35:59', '2025-07-27 00:35:59');
+(42, 'App\\Models\\User', 1, 'auth_token', 'daf6a90530d28a7df2b23d359563216cb711fdeb625fd02ac4733740734bd1cd', '[\"*\"]', NULL, NULL, '2025-07-27 00:35:59', '2025-07-27 00:35:59'),
+(43, 'App\\Models\\User', 1, 'auth_token', '737e7d5505cba4b0827c6c37dd66172eb83a3665926c12224d551dde3812122d', '[\"*\"]', '2025-07-27 07:23:07', NULL, '2025-07-27 07:23:02', '2025-07-27 07:23:07'),
+(44, 'App\\Models\\User', 1, 'auth_token', 'feba5da10c3f92ad8556b388f1a3c30273a7f18a875fded765df3a0ceeb39c6c', '[\"*\"]', '2025-07-28 07:28:07', NULL, '2025-07-27 08:03:08', '2025-07-28 07:28:07'),
+(45, 'App\\Models\\User', 14, 'auth_token', 'af342f56da57320a39b865805f0d0e17ac14e2783077c1a521739a4ba4d6bda3', '[\"*\"]', NULL, NULL, '2025-07-28 07:54:43', '2025-07-28 07:54:43'),
+(46, 'App\\Models\\User', 1, 'auth_token', '83cc4ac6dcfa2c06415d1e7b510212e9096a292b80d8c6fd0cd3ecb296d470bb', '[\"*\"]', NULL, NULL, '2025-07-28 08:30:29', '2025-07-28 08:30:29'),
+(47, 'App\\Models\\User', 1, 'auth_token', 'c467513b0eb063a4b64dc23fcdd320661ed93d9800e8a06c7bb8529741963751', '[\"*\"]', NULL, NULL, '2025-07-28 08:30:50', '2025-07-28 08:30:50'),
+(48, 'App\\Models\\User', 1, 'auth_token', 'aa033f273b1d762bc27eec036604e2e1599d9e98711fc0c3a0d0411d2335448e', '[\"*\"]', NULL, NULL, '2025-07-28 08:31:53', '2025-07-28 08:31:53'),
+(49, 'App\\Models\\User', 14, 'auth_token', '129a84f3f4665882d73314e7ca4bb1cd3ab33525b57243e233d469a9162d2308', '[\"*\"]', NULL, NULL, '2025-07-28 08:38:04', '2025-07-28 08:38:04'),
+(50, 'App\\Models\\User', 1, 'auth_token', '301ebcc17dfdd39195f49fbc1f61a3065275e5ad661b35996b9bf670cea9e570', '[\"*\"]', NULL, NULL, '2025-07-28 08:38:26', '2025-07-28 08:38:26'),
+(51, 'App\\Models\\User', 1, 'auth_token', 'c3282b1fe39d4289b386a6786c32f1592dd1f163e2f10a475b7cba1cf44898f5', '[\"*\"]', '2025-07-29 09:06:09', NULL, '2025-07-28 08:38:44', '2025-07-29 09:06:09');
 
 -- --------------------------------------------------------
 
@@ -456,11 +469,11 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`ProductID`, `CategoryID`, `Name`, `Description`, `Image`, `base_price`, `Status`, `Create_at`, `Update_at`) VALUES
-(1, 1, 'Sofa gỗ cao su cập nhật', 'Mô tả mới', 'Ban-an-Go-Cao-Su-MOHO-OSLO01.png', 6000000, 1, '2025-07-01 22:42:19', '2025-07-11 16:59:03'),
-(2, 1, 'Bàn ăn Gỗ MOHO GRENAA01', 'Bàn ăn gỗ tự nhiên, phong cách Bắc Âu', 'Ban-an-Go-MOHO-GRENAA01.png', 4200000, 1, '2025-07-01 22:42:19', '2025-07-01 22:42:19'),
-(3, 2, 'Ghế ăn Gỗ Cao Su Tự Nhiên Milan01', 'Ghế ăn gỗ cao su tự nhiên, kiểu dáng Milan', 'Ghe-an-Go-Cao-Su-Tu-Nhien-milan01.png', 900000, 1, '2025-07-01 22:42:19', '2025-07-01 22:42:19'),
-(4, 3, 'Sofa Da RIGA 2m', 'Sofa da cao cấp, dài 2m, phù hợp phòng khách hiện đại', 'Ghe-Sofa-Da-RIGA-2m.png', 7500000, 1, '2025-07-01 22:42:19', '2025-07-01 22:42:19'),
-(5, 4, 'Tủ bếp Kitchen Premium Narvik01', 'Tủ bếp gỗ cao cấp, thiết kế hiện đại', 'Kitchen-Premium-Narvik01.png', 12000000, 1, '2025-07-01 22:42:19', '2025-07-01 22:42:19'),
+(1, 1, 'Sofa gỗ cao su cập nhật', 'Mô tả mới', 'ban/Ban-an-Go-Cao-Su-MOHO-OSLO01.png', 6000000, 1, '2025-07-01 22:42:19', '2025-07-11 16:59:03'),
+(2, 1, 'Bàn ăn Gỗ MOHO GRENAA01', 'Bàn ăn gỗ tự nhiên, phong cách Bắc Âu', 'ban/Ban-an-Go-MOHO-GRENAA01.png', 4200000, 1, '2025-07-01 22:42:19', '2025-07-01 22:42:19'),
+(3, 2, 'Ghế ăn Gỗ Cao Su Tự Nhiên Milan01', 'Ghế ăn gỗ cao su tự nhiên, kiểu dáng Milan', 'ghe/Ghe-an-Go-Cao-Su-Tu-Nhien-milan01.png', 900000, 1, '2025-07-01 22:42:19', '2025-07-01 22:42:19'),
+(4, 3, 'Sofa Da RIGA 2m', 'Sofa da cao cấp, dài 2m, phù hợp phòng khách hiện đại', 'ghe/Ghe-Sofa-Da-RIGA-2m.png', 7500000, 1, '2025-07-01 22:42:19', '2025-07-01 22:42:19'),
+(5, 4, 'Tủ bếp Kitchen Premium Narvik01', 'Tủ bếp gỗ cao cấp, thiết kế hiện đại', 'tu-bep/Kitchen-Premium-Narvik01.png', 12000000, 1, '2025-07-01 22:42:19', '2025-07-01 22:42:19'),
 (6, 1, 'Sofa gỗ cao su', 'Sofa đẹp', NULL, 5000000, 1, '2025-07-05 15:34:44', '2025-07-05 15:34:44'),
 (7, 1, 'Sofa gỗ cao su', 'Sofa đẹp', NULL, 5000000, 1, '2025-07-05 15:36:27', '2025-07-05 15:36:27'),
 (8, 1, 'Sofa gỗ cao su', 'Sofa đẹp', NULL, 5000000, 1, '2025-07-05 15:38:32', '2025-07-05 15:38:32'),
@@ -471,7 +484,13 @@ INSERT INTO `products` (`ProductID`, `CategoryID`, `Name`, `Description`, `Image
 (13, 1, 'Sofa gỗ cao su', 'Sofa đẹp', NULL, 5000000, 1, '2025-07-05 15:53:50', '2025-07-05 15:53:50'),
 (14, 1, 'Sofa gỗ cao su', 'Sofa đẹp', NULL, 5000000, 1, '2025-07-05 15:54:19', '2025-07-05 15:54:19'),
 (15, 1, 'Sofa gỗ cao su', 'Sofa đẹp', NULL, 5000000, 1, '2025-07-05 17:03:30', '2025-07-05 17:03:30'),
-(16, 1, 'Sofa gỗ cao su', 'Sofa đẹp', NULL, 5000000, 1, '2025-07-11 16:57:16', '2025-07-11 16:57:16');
+(16, 1, 'Sofa gỗ ván ép', 'Sofa đẹp', NULL, 5000000, 1, '2025-07-11 16:57:16', '2025-07-27 16:22:11'),
+(17, 1, 'Bàn trà kiểu Nhật', 'Bạn có thích uống trà không?', NULL, 3000000, 1, '2025-07-27 16:19:35', '2025-07-27 16:19:35'),
+(18, 1, 'Bàn trà kiểu Nhật', 'Bạn có thích uống trà không?', NULL, 3000000, 1, '2025-07-27 16:20:23', '2025-07-27 16:46:14'),
+(19, 1, 'Bàn quý tộc', 'Bạn thích phong cách quý sì tộc?', NULL, 10000000, 1, '2025-07-27 17:01:39', '2025-07-29 15:03:51'),
+(20, 1, 'Bàn gấu', 'bàn kiểu TQ', 'products/f2eyNgujGMdY6dJ2y6T8zFJFStk0eBKoMIJ2cFcq.jpg', 3000000, 1, '2025-07-29 15:05:57', '2025-07-29 16:17:44'),
+(22, 2, 'ghế nè', 'bạn có bao giờ hỏi cần tôi không', 'products/pOAgqQcmXC0sU8YnSktT6D4rwumt0qfc3DTNC83Z.jpg', 20000, 1, '2025-07-29 15:45:37', '2025-07-29 15:45:37'),
+(27, 2, 'ghế chậu cây', 'chịu đấy', 'products/k8FxvZMfY0E2ZLgfYunmIV7B1dnl9xR3MHcEfFw8.jpg', 60000, 1, '2025-07-29 16:44:25', '2025-07-29 17:15:39');
 
 -- --------------------------------------------------------
 
@@ -482,6 +501,7 @@ INSERT INTO `products` (`ProductID`, `CategoryID`, `Name`, `Description`, `Image
 CREATE TABLE `productvariants` (
   `ProductVariantID` int(11) NOT NULL,
   `ProductID` int(11) NOT NULL,
+  `Image` varchar(255) NOT NULL,
   `Sku` varchar(255) NOT NULL,
   `Price` int(20) NOT NULL,
   `Stock` int(20) NOT NULL,
@@ -493,23 +513,24 @@ CREATE TABLE `productvariants` (
 -- Đang đổ dữ liệu cho bảng `productvariants`
 --
 
-INSERT INTO `productvariants` (`ProductVariantID`, `ProductID`, `Sku`, `Price`, `Stock`, `created_at`, `Update_at`) VALUES
-(3, 2, '20001', 4300000, 8, '2025-07-01 22:42:30', '2025-07-01 22:42:30'),
-(4, 2, '20002', 4400000, 6, '2025-07-01 22:42:30', '2025-07-01 22:42:30'),
-(5, 3, '30001', 950000, 15, '2025-07-01 22:42:30', '2025-07-01 22:42:30'),
-(6, 3, '30002', 970000, 10, '2025-07-01 22:42:30', '2025-07-01 22:42:30'),
-(7, 4, '40001', 7600000, 4, '2025-07-01 22:42:30', '2025-07-01 22:42:30'),
-(8, 4, '40002', 7700000, 3, '2025-07-01 22:42:30', '2025-07-01 22:42:30'),
-(9, 5, '50001', 12100000, 2, '2025-07-01 22:42:30', '2025-07-01 22:42:30'),
-(10, 5, '50002', 12200000, 1, '2025-07-01 22:42:30', '2025-07-01 22:42:30'),
-(11, 10, 'SKU-686948e23c737', 5000000, 10, '2025-07-05 22:46:42', '2025-07-05 15:46:42'),
-(12, 11, 'SKU-68694929e17cd', 5000000, 10, '2025-07-05 22:47:53', '2025-07-05 15:47:53'),
-(13, 12, 'SKU-68694a09c9a83', 5000000, 10, '2025-07-05 22:51:37', '2025-07-05 15:51:37'),
-(14, 13, 'SKU-68694a8e75e43', 5000000, 10, '2025-07-05 22:53:50', '2025-07-05 15:53:50'),
-(15, 14, 'SKU-68694aabcbd84', 5000000, 10, '2025-07-05 22:54:19', '2025-07-05 15:54:19'),
-(17, 15, 'SKU-68695ae2e9d4d', 5000000, 10, '2025-07-06 00:03:30', '2025-07-05 17:03:30'),
-(18, 16, 'SKU-6871426cdcd80', 5000000, 10, '2025-07-11 23:57:16', '2025-07-11 16:57:16'),
-(19, 1, 'SKU-687142d72f68f', 6000000, 15, '2025-07-11 23:59:03', '2025-07-11 16:59:03');
+INSERT INTO `productvariants` (`ProductVariantID`, `ProductID`, `Image`, `Sku`, `Price`, `Stock`, `created_at`, `Update_at`) VALUES
+(3, 2, '', '20001', 4300000, 8, '2025-07-01 22:42:30', '2025-07-01 22:42:30'),
+(4, 2, '', '20002', 4400000, 6, '2025-07-01 22:42:30', '2025-07-01 22:42:30'),
+(5, 3, '', '30001', 950000, 15, '2025-07-01 22:42:30', '2025-07-01 22:42:30'),
+(6, 3, '', '30002', 970000, 10, '2025-07-01 22:42:30', '2025-07-01 22:42:30'),
+(7, 4, '', '40001', 7600000, 4, '2025-07-01 22:42:30', '2025-07-01 22:42:30'),
+(8, 4, '', '40002', 7700000, 3, '2025-07-01 22:42:30', '2025-07-01 22:42:30'),
+(9, 5, '', '50001', 12100000, 2, '2025-07-01 22:42:30', '2025-07-01 22:42:30'),
+(10, 5, '', '50002', 12200000, 1, '2025-07-01 22:42:30', '2025-07-01 22:42:30'),
+(11, 10, '', 'SKU-686948e23c737', 5000000, 10, '2025-07-05 22:46:42', '2025-07-05 15:46:42'),
+(12, 11, '', 'SKU-68694929e17cd', 5000000, 10, '2025-07-05 22:47:53', '2025-07-05 15:47:53'),
+(13, 12, '', 'SKU-68694a09c9a83', 5000000, 10, '2025-07-05 22:51:37', '2025-07-05 15:51:37'),
+(14, 13, '', 'SKU-68694a8e75e43', 5000000, 10, '2025-07-05 22:53:50', '2025-07-05 15:53:50'),
+(15, 14, '', 'SKU-68694aabcbd84', 5000000, 10, '2025-07-05 22:54:19', '2025-07-05 15:54:19'),
+(17, 15, '', 'SKU-68695ae2e9d4d', 5000000, 10, '2025-07-06 00:03:30', '2025-07-05 17:03:30'),
+(18, 16, '', 'SKU-6871426cdcd80', 5000000, 10, '2025-07-11 23:57:16', '2025-07-11 16:57:16'),
+(19, 1, '', 'SKU-687142d72f68f', 6000000, 15, '2025-07-11 23:59:03', '2025-07-11 16:59:03'),
+(21, 5, 'C:\\xampp\\tmp\\php8173.tmp', '1111111111', 15000000, 15, '2025-07-30 01:19:47', '2025-07-30 01:19:47');
 
 -- --------------------------------------------------------
 
@@ -669,7 +690,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`UserID`, `Username`, `Password`, `remember_token`, `Email`, `email_verified_at`, `Role`, `Fullname`, `Phone`, `Address`, `Status`, `Created_at`, `Updated_at`) VALUES
-(1, 'chauchau', '$2y$12$Ywmq1ViGmO2r/YTJdkmm1uBqUZIzfoHPPoR0aCm0StR65ON8R6w4y', NULL, 'blackrabitxx@gmail.com', '2025-07-13 17:06:12', '1', 'Châu nè', NULL, NULL, NULL, '2025-06-06 14:55:57', '2025-06-06 14:55:57'),
+(1, 'chauchau', '$2y$12$Ywmq1ViGmO2r/YTJdkmm1uBqUZIzfoHPPoR0aCm0StR65ON8R6w4y', NULL, 'blackrabitxx@gmail.com', '2025-07-13 17:06:12', '1', 'Châu nè bạn', NULL, NULL, NULL, '2025-06-06 14:55:57', '2025-06-06 14:55:57'),
 (2, NULL, NULL, NULL, NULL, NULL, NULL, 'Nguyen Van L', '0123456789', NULL, NULL, NULL, NULL),
 (14, 'nguyenvanchien', '$2y$12$L5VNH3JnJtJSY1T6vke9Fe8XGNY/IRF0ygGjUxP2dOK3tlfAfzkpe', NULL, 'chauttc01@gmail.com', '2025-07-07 15:38:04', NULL, 'Nguyen Van A', NULL, NULL, NULL, NULL, NULL),
 (17, 'nguyenvanfy', '$2y$12$cod1X9/hB0FD85CYiOHcquekn7F0j2aKDB4601d7es9ulw7r3rD.e', NULL, 'nguyenvanfy@example.com', NULL, NULL, 'Nguyễn Văn F', '0123456789', 'Hà Nội', 1, NULL, NULL),
@@ -944,13 +965,13 @@ ALTER TABLE `attributes`
 -- AUTO_INCREMENT cho bảng `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `CartID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `CartID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `cart_items`
 --
 ALTER TABLE `cart_items`
-  MODIFY `CartItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `CartItemID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT cho bảng `categories`
@@ -1022,19 +1043,19 @@ ALTER TABLE `payment_gateway`
 -- AUTO_INCREMENT cho bảng `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT cho bảng `products`
 --
 ALTER TABLE `products`
-  MODIFY `ProductID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `ProductID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT cho bảng `productvariants`
 --
 ALTER TABLE `productvariants`
-  MODIFY `ProductVariantID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `ProductVariantID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT cho bảng `review`
