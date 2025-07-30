@@ -57,7 +57,7 @@ const ProductItem = ({ product }) => {
     <div className="tw-mb-4">
       <div className="tw-relative tw-pt-[100%]">
         <img
-          src={getProductImageUrl(Image)}
+          src={`http://localhost:8000${getProductImageUrl(Image)}`}
           alt={Name}
           className="tw-w-full tw-h-full tw-object-cover tw-absolute tw-top-0 tw-left-0"
         />
