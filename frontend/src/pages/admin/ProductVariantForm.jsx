@@ -17,62 +17,88 @@ const ProductVariantForm = ({ variant, onSubmit }) => {
                 Sku: variant.Sku,
                 Price: variant.Price,
                 Stock: variant.Stock,
-                Image: null, // Reset image
-            });
-        } else {
-            setFormData({
-                ProductID: '',
-                Sku: '',
-                Price: '',
-                Stock: '',
-                Image: null,
+                Image: null, // Reset image on edit
             });
         }
     }, [variant]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
+        setFormData(prev => ({ ...prev, [name]: value }));
     };
 
     const handleFileChange = (e) => {
-        setFormData((prev) => ({ ...prev, Image: e.target.files[0] }));
+        setFormData(prev => ({ ...prev, Image: e.target.files[0] }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const formDataToSubmit = new FormData();
         
-        // Thêm các trường vào FormData
-        Object.entries(formData).forEach(([key, value]) => {
-            formDataToSubmit.append(key, value);
-        });
-
         try {
-            if (variant) {
-                await axios.put(`http://localhost:8000/api/product-variants/${variant.ProductVariantID}`, formDataToSubmit, {
+            let response;
+            
+            if (formData.Image) {
+                // Use FormData when uploading image
+                const formDataToSend = new FormData();
+                formDataToSend.append('ProductID', formData.ProductID);
+                formDataToSend.append('Sku', formData.Sku);
+                formDataToSend.append('Price', formData.Price);
+                formDataToSend.append('Stock', formData.Stock);
+                formDataToSend.append('Image', formData.Image);
+
+                const config = {
                     headers: {
-                        'Content-Type': 'multipart/form-data', // Gửi dưới dạng multipart/form-data
+                        'Content-Type': 'multipart/form-data',
                     },
-                });
+                };
+
+                if (variant) {
+                    response = await axios.put(
+                        `http://localhost:8000/api/product-variants/${variant.ProductVariantID}`,
+                        formDataToSend,
+                        config
+                    );
+                } else {
+                    response = await axios.post(
+                        'http://localhost:8000/api/product-variants',
+                        formDataToSend,
+                        config
+                    );
+                }
             } else {
-                await axios.post('http://localhost:8000/api/product-variants', formDataToSubmit, {
+                // Use JSON when not uploading image
+                const data = {
+                    ProductID: formData.ProductID,
+                    Sku: formData.Sku,
+                    Price: formData.Price,
+                    Stock: formData.Stock
+                };
+
+                const config = {
                     headers: {
-                        'Content-Type': 'multipart/form-data', // Gửi dưới dạng application/json
+                        'Content-Type': 'application/json',
                     },
-                });
+                };
+
+                if (variant) {
+                    response = await axios.put(
+                        `http://localhost:8000/api/product-variants/${variant.ProductVariantID}`,
+                        data,
+                        config
+                    );
+                } else {
+                    response = await axios.post(
+                        'http://localhost:8000/api/product-variants',
+                        data,
+                        config
+                    );
+                }
             }
-            // Reset form after successful submission
-            setFormData({
-                ProductID: '',
-                Sku: '',
-                Price: '',
-                Stock: '',
-                Image: null,
-            });
+
             onSubmit();
         } catch (error) {
-            console.error('Error saving variant:', error);
+            console.error('Error saving variant:', error.response?.data || error.message);
+            alert(error.response?.data?.message || 'An error occurred');
         }
     };
 
@@ -108,7 +134,11 @@ const ProductVariantForm = ({ variant, onSubmit }) => {
                 placeholder="Stock"
                 required
             />
-            <input type="file" onChange={handleFileChange} />
+            <input 
+                type="file" 
+                accept="image/*"
+                onChange={handleFileChange} 
+            />
             <button type="submit">{variant ? 'Update' : 'Add'} Variant</button>
         </form>
     );

@@ -124,6 +124,7 @@ class ProductVariantController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            // Tìm sản phẩm biến thể
             $variant = ProductVariant::find($id);
 
             if (!$variant) {
@@ -139,7 +140,7 @@ class ProductVariantController extends Controller
                 'Sku' => 'sometimes|string',
                 'Price' => 'sometimes|numeric|min:0',
                 'Stock' => 'sometimes|integer|min:0',
-                'Image' => 'nullable|file|image|max:2048',
+                'Image' => 'nullable|sometimes|file|image|max:2048', // Make image truly optional
             ]);
 
             if ($validator->fails()) {
@@ -150,34 +151,23 @@ class ProductVariantController extends Controller
                 ], 422);
             }
 
-            // Prepare updated data
+            // Cập nhật dữ liệu
             $variantData = $validator->validated();
 
+            // Kiểm tra và xử lý hình ảnh
             if ($request->hasFile('Image')) {
-                // Xóa hình ảnh cũ nếu có
-                if ($variant->Image && Storage::disk('public')->exists($variant->Image)) {
-                    Storage::disk('public')->delete($variant->Image);
-                }
-                // Lưu hình ảnh mới
                 $imagePath = $request->file('Image')->store('images', 'public');
                 $variantData['Image'] = $imagePath; // Cập nhật đường dẫn hình ảnh
-            } else {
-                // Nếu không có hình ảnh mới, giữ hình ảnh cũ
-                unset($variantData['Image']);
             }
 
-            // Cập nhật biến thể
+            // Cập nhật sản phẩm biến thể
             $variant->update($variantData);
-
-            // Lấy lại thông tin biến thể sau khi cập nhật
-            $updatedVariant = ProductVariant::find($variant->id);
 
             return response()->json([
                 'success' => true,
-                'data' => $updatedVariant,
-                'received_data' => $variantData, // Thông báo dữ liệu đã nhận
+                'data' => $variant,
                 'message' => 'Product variant updated successfully'
-            ]);
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
