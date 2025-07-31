@@ -1,0 +1,50 @@
+.bannerContainer {
+  position: relative;
+  overflow: hidden;
+}
+
+.carousel {
+  height: 500px;
+}
+
+.slideItem {
+  position: relative;
+  height: 500px;
+}
+
+.slideImage {
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.bannerContainer :global(.ant-carousel .ant-carousel-dots) {
+  bottom: 20px;
+}
+
+.bannerContainer :global(.ant-carousel .ant-carousel-dots li button) {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.bannerContainer
+  :global(.ant-carousel .ant-carousel-dots li.ant-carousel-dot-active button) {
+  background: white;
+}
+
+@media (max-width: 768px) {
+  .carousel,
+  .slideItem {
+    height: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel,
+  .slideItem {
+    height: 250px;
+  }
+}
