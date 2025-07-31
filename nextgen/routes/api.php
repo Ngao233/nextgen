@@ -29,10 +29,6 @@ use App\Http\Controllers\Api\DashboardController; // Đây là DashboardControll
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController; // Import AdminCategoryController với alias
 use App\Http\Controllers\Admin\NewsController as AdminNewsController; // Import AdminNewsController với alias để tránh nhầm lẫn
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController; // Import AdminDashboardController
-use App\Http\Controllers\Admin\OrderController as AdminOrderController; // Import AdminOrderController
-use App\Http\Controllers\Admin\ProductController as AdminProductController; // Import AdminProductController
-use App\Http\Controllers\Admin\UserController as AdminUserController; // Import AdminUserController
-use App\Http\Controllers\Admin\VoucherController as AdminVoucherController; // Import AdminVoucherController
 
 /*
 |--------------------------------------------------------------------------
@@ -56,7 +52,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/categories', [CategoryController::class, 'store']);
     Route::put('/categories/{id}', [CategoryController::class, 'update']);
     Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
+
+
+    
 });
+Route::apiResource(name: 'product-variants', controller: ProductVariantController::class); // Tuyến đường RESTful cho biến thể sản phẩm
+
 
 // Product routes (API public) - Cần xem xét lại nếu bạn đã dùng apiResource cho products ở dưới
 Route::get('/products', [ProductController::class, 'index']);
@@ -67,11 +68,7 @@ Route::put('/products/update/{id}', [ProductController::class, 'update']);
 Route::delete('/products/{id}', [ProductController::class, 'destroy']);
 
 // ProductVariant routes (API public)
-Route::get('/variants', [ProductVariantController::class, 'index']);
-Route::get('/variants/{id}', [ProductVariantController::class, 'show']);
-Route::post('/variants', [ProductVariantController::class, 'store']);
-Route::put('/variants/{id}', [ProductVariantController::class, 'update']);
-Route::delete('/variants/{id}', [ProductVariantController::class, 'destroy']);
+
 
 // User routes (API public) - Cần xem xét lại nếu bạn đã dùng apiResource cho users ở dưới
 Route::get('/users', [UserController::class, 'index']);
@@ -87,7 +84,6 @@ Route::get('products/search', [ProductController::class, 'search']); // Tuyến 
 Route::apiResource('products', ProductController::class); // Tạo các tuyến đường RESTful cho sản phẩm
 
 // Category, Variant, Attribute, Order, User, Voucher, PaymentGateway, Review, VariantAttribute (API Resource routes)
-Route::apiResource('product-variants', ProductVariantController::class); // Tuyến đường RESTful cho biến thể sản phẩm
 Route::apiResource('attributes', AttributeController::class); // Tuyến đường RESTful cho thuộc tính
 Route::apiResource('orders', OrderController::class); // Tuyến đường RESTful cho đơn hàng
 Route::apiResource('order-details', OrderDetailController::class); // Tuyến đường RESTful cho chi tiết đơn hàng

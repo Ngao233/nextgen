@@ -23,7 +23,7 @@ import Dashboard from "./pages/admin/Dashboard/AdminDashboard";
 import AdminUser from "./pages/admin/AdminUsers"; 
 import AdminOrder from "./pages/admin/AdminOrders"; 
 import AdminProduct from "./pages/admin/AdminProducts"; 
-import AdminProductVariant from "./pages/admin/AdminProductVariant"; // Assuming you have this component
+import AdminProductVariant from "./pages/admin/ProductVariantList"; // Assuming you have this component
 const App = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const isAdmin = user && user.Role == 1; // Kiểm tra xem người dùng có phải là admin không
@@ -148,7 +148,7 @@ const App = () => {
 
             },
             {
-              path: "productvariant/:id",
+              path: "productvariant",
               element: (
                 <ProtectedRoute>
                   <AdminProductVariant />

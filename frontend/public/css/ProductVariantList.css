@@ -1,0 +1,64 @@
+.product-variant-list {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.variant-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.variant-table th, .variant-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.variant-table th {
+    background-color: #f2f2f2;
+}
+
+.edit-button, .delete-button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.edit-button {
+    background-color: #5bc0de; /* Màu xanh cho nút Sửa */
+    color: white;
+}
+
+.delete-button {
+    background-color: #d9534f; /* Màu đỏ cho nút Xóa */
+    color: white;
+}
+
+.no-variants {
+    text-align: center;
+    color: #999;
+}
+
+.product-image {
+    width: 100px; /* Hoặc kích thước khác bạn muốn */
+    height: auto; /* Giữ tỉ lệ khung hình */
+    max-height: 100px; /* Giới hạn chiều cao tối đa */
+    object-fit: cover; /* Cắt ảnh nếu cần */
+}
+
+.no-image {
+    color: #999;
+    font-style: italic;
+}
