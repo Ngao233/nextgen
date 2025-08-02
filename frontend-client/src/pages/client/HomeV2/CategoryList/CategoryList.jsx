@@ -5,7 +5,7 @@ import apiClient from "../../../../api/api";
 
 const CategoryList = () => {
   const fetchCategories = async () => {
-    const response = await apiClient.get("/api/categories", {
+    const response = await apiClient.get("/categories", {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",

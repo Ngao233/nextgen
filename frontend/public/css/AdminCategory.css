@@ -1,0 +1,96 @@
+/* AdminCategory.css */
+
+.admin-category-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.admin-category-title {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.admin-category-add-link {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.admin-category-add-link:hover {
+    background-color: #218838;
+}
+
+.admin-category-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.admin-category-item {
+    background: #f9f9f9;
+    padding: 15px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.admin-category-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 5px;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.admin-category-details {
+    flex: 1;
+}
+
+.admin-category-name {
+    font-size: 1.2em;
+    margin: 0;
+}
+
+.admin-category-description {
+    color: #555;
+}
+
+.admin-category-actions {
+    display: flex;
+    align-items: center;
+}
+
+.admin-category-edit-link {
+    margin-right: 10px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.admin-category-delete-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.admin-category-delete-button:hover {
+    background-color: #c82333;
+}
+
+.admin-category-loading, .admin-category-error {
+    text-align: center;
+    margin: 20px 0;
+}

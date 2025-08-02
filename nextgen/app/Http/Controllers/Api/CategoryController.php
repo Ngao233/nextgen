@@ -1,19 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Api; // Thay đổi namespace để phù hợp với thư mục Api
+namespace App\Http\Controllers\Api;
+use Illuminate\Support\Facades\Validator;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Category; // Đảm bảo bạn đã tạo Category Model
-
+use App\Models\Category;
+use Illuminate\Support\Facades\Storage;
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     * Lấy danh sách tất cả các category.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function index()
     {
         $categories = Category::all();
@@ -30,42 +25,35 @@ class CategoryController extends Controller
         return response()->json(['success' => true, 'data' => $data]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     * Lưu một category mới vào database.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-public function store(Request $request)
-{
-    $validated = $request->validate([
-        'Name' => 'required|string|max:255|unique:categories,Name',
-        'Description' => 'nullable|string',
-        'Image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate image
-    ]);
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'Name' => 'required|string|max:255|unique:categories,Name',
+            'Description' => 'nullable|string',
+            'Image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
-    // Handle image upload if provided
-    if ($request->hasFile('Image')) {
-        $validated['Image'] = $request->file('Image')->store('categories', 'public');
-    } else {
-        $validated['Image'] = null; // Set to null if no image is provided
+        // Xử lý upload ảnh nếu có
+        if ($request->hasFile('Image')) {
+            $validated['Image'] = $request->file('Image')->store('categories', 'public');
+        } else {
+            $validated['Image'] = null; // Nếu không có ảnh, gán là null
+        }
+
+        $category = Category::create($validated);
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'CategoryID' => $category->CategoryID,
+                'Name' => $category->Name,
+                'Description' => $category->Description,
+                'Image' => $category->Image,
+                'Create_at' => $category->created_at,
+                'Update_at' => $category->updated_at,
+            ]
+        ], 201);
     }
-
-    $category = Category::create($validated);
-
-    return response()->json([
-        'success' => true,
-        'data' => [
-            'CategoryID' => $category->CategoryID,
-            'Name' => $category->Name,
-            'Description' => $category->Description,
-            'Image' => $category->Image,
-            'Create_at' => $category->created_at,
-            'Update_at' => $category->updated_at,
-        ]
-    ], 201);
-}
 
     /**
      * Display the specified resource.
@@ -107,29 +95,26 @@ public function store(Request $request)
         if (!$category) {
             return response()->json(['success' => false, 'message' => 'Category not found'], 404);
         }
+
         $validated = $request->validate([
             'Name' => 'sometimes|string|max:255|unique:categories,Name,' . $id . ',CategoryID',
             'Description' => 'nullable|string',
-            'Image' => 'nullable',
+            'Image' => 'nullable|string', // Chỉ cần kiểm tra đường dẫn
         ]);
-        // Xử lý upload file ảnh nếu có
-        if ($request->hasFile('Image')) {
-            $imagePath = $request->file('Image')->store('categories', 'public');
-            $validated['Image'] = $imagePath;
-        } elseif ($request->has('Image')) {
-            $validated['Image'] = $request->input('Image');
-        }
-        $validated['Update_at'] = now();
+
+        // Cập nhật thông tin
         $category->update($validated);
+
+        // Lấy lại thông tin sau khi cập nhật
         return response()->json([
             'success' => true,
             'data' => [
                 'CategoryID' => $category->CategoryID,
                 'Name' => $category->Name,
                 'Description' => $category->Description,
-                'Image' => $category->Image,
+                'Image' => asset('storage/' . $validated['Image']),
                 'Create_at' => $category->Create_at,
-                'Update_at' => $category->Update_at,
+                'Update_at' => $category->updated_at,
             ]
         ]);
     }

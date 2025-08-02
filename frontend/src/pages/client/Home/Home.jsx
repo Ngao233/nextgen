@@ -9,7 +9,7 @@ const Home = () => {
   const { data: productsData, isLoading } = useQuery({
     queryKey: ["products"],
     queryFn: async () => {
-      const response = await apiClient.get("/api/products");
+      const response = await apiClient.get("/products");
       return response.data;
     },
   });

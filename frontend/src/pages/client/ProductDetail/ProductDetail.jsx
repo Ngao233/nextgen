@@ -19,7 +19,7 @@ const ProductDetail = () => {
   const { data: product, isLoading } = useQuery({
     queryKey: ["product", id],
     queryFn: async () => {
-      const response = await apiClient.get(`/api/products/detail/${id}`);
+      const response = await apiClient.get(`/products/detail/${id}`);
       return response.data.data;
     },
     onSuccess: (data) => {
@@ -42,7 +42,7 @@ const ProductDetail = () => {
   const { data: latestProducts, isLoading: isLoadingLatest } = useQuery({
     queryKey: ["latestProducts"],
     queryFn: async () => {
-      const response = await apiClient.get("/api/products");
+      const response = await apiClient.get("/products");
       return response.data.data;
     },
   });

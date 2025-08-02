@@ -1,3 +1,4 @@
+import React, { useState } from "react"; // Thêm useState vào đây
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 import AppLayout from "./layouts/AppLayout/AppLayout";
 import MainLayout from "./layouts/MainLayout/MainLayout";
@@ -23,10 +24,14 @@ import Dashboard from "./pages/admin/Dashboard/AdminDashboard";
 import AdminUser from "./pages/admin/AdminUsers"; 
 import AdminOrder from "./pages/admin/AdminOrders"; 
 import AdminProduct from "./pages/admin/AdminProducts"; 
-import AdminProductVariant from "./pages/admin/ProductVariantList"; // Assuming you have this component
+import AdminProductVariant from "./pages/admin/ProductVariantList"; 
+import AdminCategory from "./pages/admin/categories/AdminCategory"; 
+import EditCategory from "./pages/admin/categories/EditCategory";
+import AddCategory from "./pages/admin/categories/AddCategory";
+
 const App = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
-  const isAdmin = user && user.Role == 1; // Kiểm tra xem người dùng có phải là admin không
+  const user = JSON.parse(localStorage.getItem("user")) || {}; // Đặt mặc định là object rỗng
+  const isAdmin = user.Role == 1; // Kiểm tra quyền admin
 
   const ProtectedRoute = ({ children }) => {
     return isAdmin ? children : <Navigate to="/" />;
@@ -37,124 +42,40 @@ const App = () => {
       path: "",
       element: <AppLayout />,
       children: [
-        // client routes
         {
           path: "",
           element: <MainLayout />,
           children: [
-            {
-              path: "",
-              element: <Home />,
-            },
-            {
-              path: "about",
-              element: <About />,
-            },
-            {
-              path: "projects",
-              element: <Projects />,
-            },
-            {
-              path: "news",
-              element: <News />,
-            },
-            {
-              path: "services",
-              element: <Services />,
-            },
-            {
-              path: "contact",
-              element: <Contact />,
-            },
-            {
-              path: "login",
-              element: <Login />,
-            },
-            {
-              path: "register",
-              element: <Register />,
-            },
-            {
-              path: "verify-email",
-              element: <VerifyEmail />,
-            },
-            {
-              path: "forgot-password",
-              element: <ForgotPassword />,
-            },
-            {
-              path: "reset-password",
-              element: <ResetPassword />,
-            },
-            {
-              path: "products",
-              element: <Products />,
-            },
-            {
-              path: "products/:id",
-              element: <ProductDetail />,
-            },
-            {
-              path: "cart",
-              element: <Cart />,
-            },
-            {
-              path: "checkout",
-              element: <Checkout />,
-            },
-            {
-              path: "thank-you",
-              element: <ThankYou />,
-            },
+            { path: "", element: <Home /> },
+            { path: "about", element: <About /> },
+            { path: "projects", element: <Projects /> },
+            { path: "news", element: <News /> },
+            { path: "services", element: <Services /> },
+            { path: "contact", element: <Contact /> },
+            { path: "login", element: <Login /> },
+            { path: "register", element: <Register /> },
+            { path: "verify-email", element: <VerifyEmail /> },
+            { path: "forgot-password", element: <ForgotPassword /> },
+            { path: "reset-password", element: <ResetPassword /> },
+            { path: "products", element: <Products /> },
+            { path: "products/:id", element: <ProductDetail /> },
+            { path: "cart", element: <Cart /> },
+            { path: "checkout", element: <Checkout /> },
+            { path: "thank-you", element: <ThankYou /> },
           ],
         },
-
-        // admin routes
         {
           path: "admin",
           element: <AdminLayout />,
           children: [
-            {
-              path: "",
-              element: (
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              ),
-            },
-            {
-              path: "users",
-              element: (
-                <ProtectedRoute>
-                  <AdminUser />
-                </ProtectedRoute>
-              ),
-            },
-            {
-              path: "orders",
-              element: (
-                <ProtectedRoute>
-                  <AdminOrder />
-                </ProtectedRoute>
-              ),
-            },
-            {
-              path: "products",
-              element: (
-                <ProtectedRoute>
-                  <AdminProduct />
-                </ProtectedRoute>
-              ),
-
-            },
-            {
-              path: "productvariant",
-              element: (
-                <ProtectedRoute>
-                  <AdminProductVariant />
-                </ProtectedRoute>
-              ),
-            },
+            { path: "", element: <ProtectedRoute><Dashboard /></ProtectedRoute> },
+            { path: "users", element: <ProtectedRoute><AdminUser /></ProtectedRoute> },
+            { path: "orders", element: <ProtectedRoute><AdminOrder /></ProtectedRoute> },
+            { path: "products", element: <ProtectedRoute><AdminProduct /></ProtectedRoute> },
+            { path: "productvariant", element: <ProtectedRoute><AdminProductVariant /></ProtectedRoute> },
+            { path: "categories", element: <ProtectedRoute><AdminCategory /></ProtectedRoute> },
+            { path: "edit-category/:id", element: <ProtectedRoute><EditCategory/></ProtectedRoute> },
+            { path: "add-category", element: <ProtectedRoute><AddCategory  /></ProtectedRoute> },
           ],
         },
       ],

@@ -6,7 +6,7 @@ import ProductItem from "../../../../components/ProductItem/ProductItem";
 
 const BestSelling = () => {
   const fetchProducts = async () => {
-    const response = await apiClient.get("/api/products", {
+    const response = await apiClient.get("/products", {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",

@@ -16,13 +16,13 @@ const fetchProducts = async (filters) => {
   if (filters.query) params.append("q", filters.query);
 
   const { data } = await apiClient.get(
-    `/api/products/search?${params.toString()}`
+    `/products/search?${params.toString()}`
   );
   return data;
 };
 
 const fetchCategories = async () => {
-  const { data } = await apiClient.get("/api/categories");
+  const { data } = await apiClient.get("/categories");
   return data;
 };
 

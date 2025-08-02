@@ -47,15 +47,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
+
+
+    
+});
+Route::apiResource('categories', CategoryController::class);
     Route::get('/categories', [CategoryController::class, 'index']);
     Route::get('/categories/{id}', [CategoryController::class, 'show']);
     Route::post('/categories', [CategoryController::class, 'store']);
     Route::put('/categories/{id}', [CategoryController::class, 'update']);
     Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
 
-
-    
-});
 Route::apiResource(name: 'product-variants', controller: ProductVariantController::class); // Tuyến đường RESTful cho biến thể sản phẩm
 
 
