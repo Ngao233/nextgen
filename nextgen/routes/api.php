@@ -94,6 +94,7 @@ Route::apiResource('vouchers', VoucherController::class); // Tuyến đường R
 Route::apiResource('payment-gateways', PaymentGatewayController::class); // Tuyến đường RESTful cho cổng thanh toán
 Route::apiResource('reviews', ReviewController::class); // Tuyến đường RESTful cho đánh giá
 Route::apiResource('variant-attributes', VariantAttributeController::class); // Tuyến đường RESTful cho thuộc tính biến thể
+Route::apiResource('news', AdminNewsController::class); // Tuyến đường RESTful cho quản lý tin tức (admin)
 
 // Cart routes (custom, không dùng apiResource)
 Route::middleware('auth:sanctum')->prefix('carts')->group(function () { // Nhóm các tuyến đường liên quan đến giỏ hàng
@@ -142,7 +143,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/dashboard/category-stats', [AdminDashboardController::class, 'getCategoryStats']); // Lấy dữ liệu thống kê sản phẩm theo loại
 
         // Các route API cho Admin News (CRUD đầy đủ)
-        Route::apiResource('news', AdminNewsController::class); // Tuyến đường RESTful cho quản lý tin tức (admin)
 
         // THÊM CÁC ROUTE QUẢN LÝ DANH MỤC ADMIN TẠI ĐÂY
         // Các route này sẽ có dạng /api/admin/categories, /api/admin/categories/{id}, v.v.

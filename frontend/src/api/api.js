@@ -68,4 +68,10 @@ export const getVouchers = () => apiClient.get('/vouchers');
 export const addVoucher = (data) => apiClient.post('/vouchers', data);
 export const updateVoucher = (data) => apiClient.put(`/vouchers/${data.id}`, data);
 export const deleteVoucher = (id) => apiClient.delete(`/vouchers/${id}`);
+
+export const getNews = () => apiClient.get('/news');
+export const addNews = (data) => apiClient.post('/news', data);
+export const updateNews = (data) => apiClient.put(`/news/${data.id}`, data);
+export const deleteNews = (id) => apiClient.delete(`/news/${id}`);
+export const selectNews = (id) => apiClient.get(`/news/${id}`);
 export default apiClient;

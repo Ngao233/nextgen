@@ -29,6 +29,7 @@ import AdminCategory from "./pages/admin/categories/AdminCategory";
 import EditCategory from "./pages/admin/categories/EditCategory";
 import AddCategory from "./pages/admin/categories/AddCategory";
 import AdminVoucher from "./pages/admin/voucher/AdminVoucher"; 
+import AdminNews from "./pages/admin/news/AdminNews"; 
 
 
 const App = () => {
@@ -79,6 +80,7 @@ const App = () => {
             { path: "edit-category/:id", element: <ProtectedRoute><EditCategory/></ProtectedRoute> },
             { path: "add-category", element: <ProtectedRoute><AddCategory  /></ProtectedRoute> },
             { path: "vouchers", element: <ProtectedRoute><AdminVoucher /></ProtectedRoute> },
+            { path: "news", element: <ProtectedRoute><AdminNews /></ProtectedRoute> },
           ],
         },
       ],
