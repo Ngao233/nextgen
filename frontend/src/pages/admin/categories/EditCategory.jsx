@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchCategories } from '../../../api/api';
+import '../../../../public/css/AdminCategory.css'; 
 
 const EditCategory = () => {
     const { id } = useParams();
@@ -69,9 +70,10 @@ const EditCategory = () => {
     if (!category) return <div>Loading...</div>;
 
     return (
-        <form onSubmit={handleSubmit}>
-            <h2>Edit Category</h2>
+        <form className="edit-category-form" onSubmit={handleSubmit}>
+            <h2 className="form-title">Edit Category</h2>
             <input
+                className="form-input"
                 name="Name"
                 value={formData.Name}
                 onChange={handleChange}
@@ -79,23 +81,25 @@ const EditCategory = () => {
                 required
             />
             <textarea
+                className="form-textarea"
                 name="Description"
                 value={formData.Description}
                 onChange={handleChange}
                 placeholder="Description"
             />
             <input
+                className="form-file-input"
                 type="file"
                 accept="image/jpeg,image/png,image/jpg,gif"
                 onChange={handleFileChange}
             />
             {category.Image && (
-                <div>
-                    <img src={`${import.meta.env.REACT_APP_IMAGE_URL}/categories/${category.Image}`} alt={category.Name} style={{ width: '100px', height: 'auto' }} />
+                <div className="current-image">
+                    <img src={`http://localhost:8000/storage/${category.Image}`} alt={category.Name} className="image-preview" />
                     <p>Current Image</p>
                 </div>
             )}
-            <button type="submit">Update Category</button>
+            <button type="submit" className="form-button">Update Category</button>
         </form>
     );
 };

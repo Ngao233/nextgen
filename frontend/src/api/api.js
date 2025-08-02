@@ -60,6 +60,12 @@ export const updateCategory = async (id, data) => {
     });
     return response.json();
 };
+
 export const deleteCategory = (id) => apiClient.delete(`/categories/${id}`);
 
+
+export const getVouchers = () => apiClient.get('/vouchers');
+export const addVoucher = (data) => apiClient.post('/vouchers', data);
+export const updateVoucher = (data) => apiClient.put(`/vouchers/${data.id}`, data);
+export const deleteVoucher = (id) => apiClient.delete(`/vouchers/${id}`);
 export default apiClient;

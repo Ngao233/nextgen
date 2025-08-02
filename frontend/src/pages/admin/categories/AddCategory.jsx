@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { addCategory } from '../../../api/api';
 import { useNavigate } from 'react-router-dom';
+import '../../../../public/css/AdminCategory.css'; 
 
 const AddCategory = () => {
     const [name, setName] = useState('');
@@ -25,9 +26,10 @@ const AddCategory = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <h2>Add Category</h2>
+        <form className="add-category-form" onSubmit={handleSubmit}>
+            <h2 className="form-title">Add Category</h2>
             <input 
+                className="form-input"
                 type="text" 
                 placeholder="Category Name" 
                 value={name} 
@@ -35,15 +37,17 @@ const AddCategory = () => {
                 required 
             />
             <textarea 
+                className="form-textarea"
                 placeholder="Description" 
                 value={description} 
                 onChange={(e) => setDescription(e.target.value)} 
             />
             <input 
+                className="form-file-input"
                 type="file" 
                 onChange={(e) => setImage(e.target.files[0])} 
             />
-            <button type="submit">Add Category</button>
+            <button type="submit" className="form-button">Add Category</button>
         </form>
     );
 };

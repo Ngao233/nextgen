@@ -28,6 +28,8 @@ import AdminProductVariant from "./pages/admin/ProductVariantList";
 import AdminCategory from "./pages/admin/categories/AdminCategory"; 
 import EditCategory from "./pages/admin/categories/EditCategory";
 import AddCategory from "./pages/admin/categories/AddCategory";
+import AdminVoucher from "./pages/admin/voucher/AdminVoucher"; 
+
 
 const App = () => {
   const user = JSON.parse(localStorage.getItem("user")) || {}; // Đặt mặc định là object rỗng
@@ -76,6 +78,7 @@ const App = () => {
             { path: "categories", element: <ProtectedRoute><AdminCategory /></ProtectedRoute> },
             { path: "edit-category/:id", element: <ProtectedRoute><EditCategory/></ProtectedRoute> },
             { path: "add-category", element: <ProtectedRoute><AddCategory  /></ProtectedRoute> },
+            { path: "vouchers", element: <ProtectedRoute><AdminVoucher /></ProtectedRoute> },
           ],
         },
       ],
