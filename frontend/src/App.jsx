@@ -29,8 +29,8 @@ import AdminCategory from "./pages/admin/categories/AdminCategory";
 import EditCategory from "./pages/admin/categories/EditCategory";
 import AddCategory from "./pages/admin/categories/AddCategory";
 import AdminVoucher from "./pages/admin/voucher/AdminVoucher"; 
-import AdminNews from "./pages/admin/news/AdminNews"; 
-
+import AdminNews from "./pages/admin/news/AdminNews"; // Thêm import cho AdminNews
+import NewsList from "./pages/admin/news/NewList"; // Thêm import cho NewsList
 
 const App = () => {
   const user = JSON.parse(localStorage.getItem("user")) || {}; // Đặt mặc định là object rỗng

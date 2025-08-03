@@ -21,7 +21,7 @@ class NewsController extends Controller // Định nghĩa class Controller của
     public function index() // Phương thức này xử lý việc lấy tất cả bài viết.
     {
         // Lấy tất cả bài viết từ cơ sở dữ liệu, sắp xếp theo ngày đăng giảm dần.
-        $articles = News::orderBy('publish_date', 'desc')->get();
+        $articles = News::orderBy('publish_at', 'desc')->get();
         // Trả về danh sách bài viết dưới dạng phản hồi JSON.
         return response()->json($articles);
     }

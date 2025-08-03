@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Đảm bảo bạn đã cài đặt axios (npm install axios)
-import '../NewsPage.css'; // Giả sử NewsPage.css nằm ở thư mục cha của admin, hoặc điều chỉnh đường dẫn
+//import '../NewsPage.css'; // Giả sử NewsPage.css nằm ở thư mục cha của admin, hoặc điều chỉnh đường dẫn
 
 const NewsPage = () => {
   const [articles, setArticles] = useState([]);
@@ -9,7 +9,7 @@ const NewsPage = () => {
   const [alertType, setAlertType] = useState('alert-success');
 
   // ĐƯỜNG DẪN ĐẾN API PHP CỦA BẠN - THAY ĐỔI THEO CẤU HÌNH SERVER CỦA BẠN
-  const API_URL = 'http://localhost/your_php_project_folder/api/NewsApiController.php';
+  const API_URL = 'http://localhost:8000/api/news'; // Thay đổi theo đường dẫn API của bạn
 
   const showAndHideAlert = (message, type) => {
     setAlertMessage(message);

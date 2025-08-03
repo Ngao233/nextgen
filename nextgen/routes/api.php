@@ -27,7 +27,6 @@ use App\Http\Controllers\Api\DashboardController; // Đây là DashboardControll
 
 // Import các Controller từ namespace Admin (để dùng cho chức năng export và admin CRUD)
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController; // Import AdminCategoryController với alias
-use App\Http\Controllers\Admin\NewsController as AdminNewsController; // Import AdminNewsController với alias để tránh nhầm lẫn
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController; // Import AdminDashboardController
 
 /*
@@ -48,9 +47,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware('auth:sanctum')->group(function () {
 
-
-    
 });
+Route::apiResource('news', NewsApiController::class); // Tuyến đường RESTful cho quản lý tin tức (admin)
+
 Route::apiResource('categories', CategoryController::class);
     Route::get('/categories', [CategoryController::class, 'index']);
     Route::get('/categories/{id}', [CategoryController::class, 'show']);
@@ -94,7 +93,6 @@ Route::apiResource('vouchers', VoucherController::class); // Tuyến đường R
 Route::apiResource('payment-gateways', PaymentGatewayController::class); // Tuyến đường RESTful cho cổng thanh toán
 Route::apiResource('reviews', ReviewController::class); // Tuyến đường RESTful cho đánh giá
 Route::apiResource('variant-attributes', VariantAttributeController::class); // Tuyến đường RESTful cho thuộc tính biến thể
-Route::apiResource('news', AdminNewsController::class); // Tuyến đường RESTful cho quản lý tin tức (admin)
 
 // Cart routes (custom, không dùng apiResource)
 Route::middleware('auth:sanctum')->prefix('carts')->group(function () { // Nhóm các tuyến đường liên quan đến giỏ hàng
@@ -114,12 +112,7 @@ Route::prefix('favorite-products')->group(function () {
     Route::delete('/', [FavoriteProductController::class, 'destroy']);
 });
 
-// News routes (nếu chỉ GET, giữ lại như sau)
-Route::get('/news', [NewsApiController::class, 'index']);
-Route::get('/news/{slug}', [NewsApiController::class, 'show']);
 
-// Nếu muốn CRUD đầy đủ cho news, dùng:
-// Route::apiResource('news', NewsApiController::class);
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -142,7 +135,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/dashboard/recent-activities', [AdminDashboardController::class, 'getRecentActivities']); // Lấy dữ liệu hoạt động gần đây
         Route::get('/dashboard/category-stats', [AdminDashboardController::class, 'getCategoryStats']); // Lấy dữ liệu thống kê sản phẩm theo loại
 
-        // Các route API cho Admin News (CRUD đầy đủ)
 
         // THÊM CÁC ROUTE QUẢN LÝ DANH MỤC ADMIN TẠI ĐÂY
         // Các route này sẽ có dạng /api/admin/categories, /api/admin/categories/{id}, v.v.

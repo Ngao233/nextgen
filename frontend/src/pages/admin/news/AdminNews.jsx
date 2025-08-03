@@ -1,40 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getNews, addNews, updateNews, deleteNews } from '../../../api/api'; 
-import '../../../../public/css/AdminNews.css'; 
+import React, { useState, useEffect } from 'react';
+import { updateNews, addNews, deleteNews } from '../../../api/api'; // Đảm bảo rằng bạn đã định nghĩa các hàm này
 
 const AdminNews = () => {
     const [news, setNews] = useState([]);
-    const [formData, setFormData] = useState({
-        Title: '',
-        Content: '',
-        Author: '',
-        Status: true,
-        Description: '',
-        Expiry_date: '',
-    });
-    const [selectedNews, setSelectedNews] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [isFormVisible, setIsFormVisible] = useState(false); // State để điều khiển hiển thị form
-    const API_BASE_URL = 'http://localhost:8000/api';
+    const [showModal, setShowModal] = useState(false);
+    const [editingNews, setEditingNews] = useState(null);
+    const [formData, setFormData] = useState({
+        title: '',
+        content: '',
+        image: '',
+        status: 'published',
+        published_at: '',
+        author_id: '', // Thêm trường author_id
+    });
 
-    // Hàm lấy danh sách tin tức
+    const API_URL = 'http://localhost:8000/api/news';
+
     const fetchNews = async () => {
         try {
-            const response = await fetch(`${API_BASE_URL}/news`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+            const response = await fetch(API_URL);
             const data = await response.json();
-            if (data.success) {
-                setNews(data.data || []);
+            if (response.ok && data.success) {
+                setNews(data.data.data);
             } else {
-                setError('Failed to fetch news: ' + (data.message || 'Unknown error'));
+                setError('Không thể tải danh sách bài viết');
             }
         } catch (err) {
-            console.error('Fetch error: ', err);
-            setError('Error fetching news: ' + err.message);
+            console.error('Lỗi khi tải danh sách bài viết:', err);
+            setError('Lỗi kết nối server');
         } finally {
             setLoading(false);
         }
@@ -51,128 +46,185 @@ const AdminNews = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError('');
+        setError(null);
 
         try {
-            if (selectedNews) {
-                await updateNews({ ...formData, id: selectedNews.id });
+            if (editingNews) {
+                await updateNews({ ...formData, id: editingNews.id });
             } else {
                 await addNews(formData);
             }
-            setFormData({ Title: '', Content: '', Author: '', Status: true, Description: '', Expiry_date: '' });
-            setSelectedNews(null);
-            setIsFormVisible(false); // Ẩn form sau khi thêm/sửa
-            fetchNews(); // Cập nhật lại danh sách tin tức
+            setFormData({ title: '', content: '', image: '', status: 'published', published_at: '', author_id: '' }); // Reset form
+            setEditingNews(null);
+            setShowModal(false);
+            fetchNews();
         } catch (err) {
-            setError('Error: ' + (err.response?.data?.message || 'Something went wrong'));
+            setError('Lỗi: ' + (err.message || 'Có gì đó không ổn'));
         }
     };
 
-    const handleEdit = (newsItem) => {
-        setSelectedNews(newsItem);
-        setFormData(newsItem);
-        setIsFormVisible(true); // Hiện form khi chỉnh sửa
+    const openAddModal = () => {
+        setEditingNews(null);
+        setFormData({ title: '', content: '', image: '', status: 'published', published_at: '', author_id: '' });
+        setShowModal(true);
     };
 
-    const handleDelete = async (id) => {
-        if (window.confirm('Are you sure you want to delete this news item?')) {
+    const openEditModal = (newsItem) => {
+        setEditingNews(newsItem);
+        setFormData({
+            title: newsItem.title,
+            content: newsItem.content,
+            image: newsItem.image,
+            status: newsItem.status,
+            published_at: newsItem.published_at.split('T')[0], // Chỉ lấy phần ngày
+            author_id: newsItem.author_id, // Giữ lại author_id
+        });
+        setShowModal(true);
+    };
+
+    const handleDeleteNews = async (id) => {
+        if (window.confirm('Bạn có chắc muốn xóa bài viết này?')) {
             try {
                 await deleteNews(id);
-                fetchNews(); // Cập nhật lại danh sách tin tức
+                fetchNews();
             } catch (err) {
-                setError('Error: ' + (err.response?.data?.message || 'Could not delete'));
+                setError('Lỗi: ' + (err.message || 'Không thể xóa'));
             }
         }
     };
 
-    return (
-        <div className="news-management">
-            <h2>News Management</h2>
-            {error && <p className="error">{error}</p>}
-            {loading ? (
-                <p>Loading...</p>
-            ) : (
-                <>
-                    <button onClick={() => {
-                        setSelectedNews(null);
-                        setIsFormVisible(true); // Hiện form khi nhấn nút thêm
-                    }}>Add New News</button>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Content</th>
-                                <th>Author</th>
-                                <th>Status</th>
-                                <th>Description</th>
-                                <th>Expiry Date</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {Array.isArray(news) && news.map(item => (
-                                <tr key={item.id}>
-                                    <td>{item.title}</td> {/* Chỉnh sửa ở đây */}
-                                    <td>{item.Content}</td>
-                                    <td>{item.Author}</td>
-                                    <td>{item.Status ? 'Active' : 'Inactive'}</td>
-                                    <td>{item.Description}</td>
-                                    <td>{new Date(item.Expiry_date).toLocaleDateString()}</td>
-                                    <td>
-                                        <button onClick={() => handleEdit(item)}>Edit</button>
-                                        <button onClick={() => handleDelete(item.id)}>Delete</button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+    if (loading) return <div>Đang tải...</div>;
+    if (error) return <div style={{ color: 'red' }}>Lỗi: {error}</div>;
 
-                    {isFormVisible && (  // Chỉ hiển thị form khi isFormVisible là true
+    return (
+        <div>
+            <h2>Quản lý bài viết</h2>
+            <button onClick={openAddModal} style={{ marginBottom: '20px' }}>
+                Thêm bài viết
+            </button>
+
+            {/* Modal Form */}
+            {showModal && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    background: 'rgba(0,0,0,0.5)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: 1000,
+                }}>
+                    <div style={{
+                        background: 'white',
+                        padding: '30px',
+                        borderRadius: '8px',
+                        width: '500px',
+                        maxHeight: '80vh',
+                        overflowY: 'auto',
+                    }}>
+                        <h3>{editingNews ? 'Sửa bài viết' : 'Thêm bài viết mới'}</h3>
+                        
                         <form onSubmit={handleSubmit}>
-                            <h3>{selectedNews ? 'Edit News' : 'Add News'}</h3>
-                            <input
-                                name="Title"
-                                placeholder="News Title"
-                                value={formData.Title}
-                                onChange={handleChange}
-                                required
-                            />
-                            <textarea
-                                name="Content"
-                                placeholder="News Content"
-                                value={formData.Content}
-                                onChange={handleChange}
-                                required
-                            />
-                            <input
-                                name="Author"
-                                placeholder="Author"
-                                value={formData.Author}
-                                onChange={handleChange}
-                                required
-                            />
-                            <select name="Status" value={formData.Status} onChange={handleChange}>
-                                <option value={true}>Active</option>
-                                <option value={false}>Inactive</option>
-                            </select>
-                            <textarea
-                                name="Description"
-                                placeholder="Description"
-                                value={formData.Description}
-                                onChange={handleChange}
-                            />
-                            <input
-                                type="date"
-                                name="Expiry_date"
-                                value={formData.Expiry_date}
-                                onChange={handleChange}
-                                required
-                            />
-                            <button type="submit">{selectedNews ? 'Update' : 'Add'} News</button>
+                            <div>
+                                <label>Tên bài viết *</label>
+                                <input
+                                    type="text"
+                                    name="title"
+                                    value={formData.title}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label>Nội dung *</label>
+                                <textarea
+                                    name="content"
+                                    value={formData.content}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label>Hình ảnh (URL)</label>
+                                <input
+                                    type="text"
+                                    name="image"
+                                    value={formData.image}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div>
+                                <label>Trạng thái</label>
+                                <select
+                                    name="status"
+                                    value={formData.status}
+                                    onChange={handleChange}
+                                >
+                                    <option value="published">Đã xuất bản</option>
+                                    <option value="draft">Nháp</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>Ngày xuất bản</label>
+                                <input
+                                    type="date"
+                                    name="published_at"
+                                    value={formData.published_at}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div>
+                                <label>ID tác giả *</label>
+                                <input
+                                    type="text"
+                                    name="author_id"
+                                    value={formData.author_id}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                            <button type="submit">{editingNews ? 'Cập nhật' : 'Thêm'}</button>
+                            <button type="button" onClick={() => setShowModal(false)}>Hủy</button>
                         </form>
-                    )}
-                </>
+                    </div>
+                </div>
             )}
+
+            {/* Bảng danh sách bài viết */}
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <thead>
+                    <tr style={{ background: '#f5f5f5' }}>
+                        <th>ID</th>
+                        <th>Tiêu đề</th>
+                        <th>Nội dung</th>
+                        <th>Hình ảnh</th>
+                        <th>Trạng thái</th>
+                        <th>Ngày xuất bản</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {news.map(item => (
+                        <tr key={item.id}>
+                            <td>{item.id}</td>
+                            <td>{item.title}</td>
+                            <td>{item.content}</td>
+                            <td>
+                                <img src={item.image} alt={item.title} style={{ width: '100px' }} />
+                            </td>
+                            <td>{item.status}</td>
+                            <td>{new Date(item.published_at).toLocaleDateString('vi-VN')}</td>
+                            <td>
+                                <button onClick={() => openEditModal(item)}>Sửa</button>
+                                <button onClick={() => handleDeleteNews(item.id)}>Xóa</button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
     );
 };

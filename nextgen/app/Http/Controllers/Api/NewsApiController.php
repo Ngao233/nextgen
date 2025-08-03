@@ -1,89 +1,123 @@
 <?php
 
-namespace App\Http\Controllers\Api; // Namespace cho các API controller
+namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller; // Kế thừa từ Controller cơ bản
-use App\Models\News; // Import News Model
+use App\Http\Controllers\Controller;
+use App\Models\News;
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse; // Import JsonResponse để trả về JSON rõ ràng
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Str;
 
 class NewsApiController extends Controller
 {
     /**
      * Display a listing of the news articles.
-     * Hiển thị danh sách các bài viết tin tức.
      *
      * @return JsonResponse
      */
     public function index(): JsonResponse
     {
-        // Lấy tất cả các bài viết tin tức có trạng thái 'published'
-        // Sắp xếp theo ngày xuất bản (hoặc ngày tạo) mới nhất
-        // Phân trang 10 bài viết mỗi trang.
-        // Bạn có thể thêm eager loading cho tác giả nếu cần: ->with('author')
         $news = News::where('status', 'published')
                     ->orderBy('published_at', 'desc')
                     ->paginate(10);
 
-        // Trả về dữ liệu tin tức dưới dạng JSON
-        return response()->json($news);
+        return response()->json([
+            'success' => true,
+            'data' => $news,
+        ]);
     }
 
     /**
      * Display the specified news article.
-     * Hiển thị chi tiết một bài viết tin tức cụ thể.
      *
-     * @param  string  $slug The slug of the news article.
+     * @param string $slug The slug of the news article.
      * @return JsonResponse
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function show(string $slug): JsonResponse
     {
-        // Tìm bài viết tin tức theo slug và đảm bảo nó có trạng thái 'published'
-        // Nếu không tìm thấy hoặc chưa được xuất bản, sẽ tự động trả về lỗi 404
-        // Bạn có thể thêm eager loading cho tác giả nếu cần: ->with('author')
         $news = News::where('slug', $slug)
                     ->where('status', 'published')
                     ->firstOrFail();
 
-        // Trả về dữ liệu tin tức dưới dạng JSON
-        return response()->json($news);
+        return response()->json([
+            'success' => true,
+            'data' => $news,
+        ]);
     }
 
+    /**
+     * Store a newly created news article.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'Title' => 'required|string|max:255',
-            'Content' => 'required|string',
-            'Image' => 'nullable|string|max:255',
-            'Status' => 'nullable|boolean',
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'author_id' => 'required|integer',
+            'status' => 'required|string',
+            'published_at' => 'nullable|date',
         ]);
-        $news = News::create($validated);
-        return response()->json(['success' => true, 'data' => $news], 201);
+
+        $slug = Str::slug($request->title); // Sử dụng Str::slug() để tạo slug
+
+        $news = News::create(array_merge($request->all(), ['slug' => $slug]));
+
+        return response()->json([
+            'success' => true,
+            'data' => $news,
+        ], 201);
     }
 
-    public function update(Request $request, $id)
+    /**
+     * Update the specified news article.
+     *
+     * @param Request $request
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function update(Request $request, int $id): JsonResponse
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'author_id' => 'required|integer',
+            'status' => 'required|string',
+            'published_at' => 'nullable|date',
+        ]);
+
+        $news = News::findOrFail($id);
+        $news->update($request->all());
+
+        return response()->json([
+            'success' => true,
+            'data' => $news,
+        ]);
+    }
+
+    /**
+     * Remove the specified news article.
+     *
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function destroy(int $id): JsonResponse
     {
         $news = News::find($id);
         if (!$news) {
-            return response()->json(['success' => false, 'message' => 'News not found'], 404);
+            return response()->json([
+                'success' => false,
+                'message' => 'News not found'
+            ], 404);
         }
-        $validated = $request->validate([
-            'Title' => 'sometimes|string|max:255',
-            'Content' => 'sometimes|string',
-            'Image' => 'nullable|string|max:255',
-            'Status' => 'nullable|boolean',
-        ]);
-        $news->update($validated);
-        return response()->json(['success' => true, 'data' => $news]);
-    }
-
-    public function destroy($id)
-    {
-        $news = News::find($id);
-        if (!$news) {
-            return response()->json(['success' => false, 'message' => 'News not found'], 404);
-        }
+        
         $news->delete();
-        return response()->json(['success' => true, 'message' => 'News deleted']);
+        return response()->json([
+            'success' => true,
+            'message' => 'News deleted'
+        ]);
     }
 }
