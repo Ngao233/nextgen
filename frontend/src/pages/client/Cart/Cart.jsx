@@ -1,18 +1,29 @@
 import React, { useEffect, useState } from "react";
 import ClientHeader from "../../../layouts/MainLayout/ClientHeader";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { Checkbox, message } from "antd";
 import { formatPrice } from "../../../utils/formatPrice";
 import apiClient from "../../../api/api";
+import Checkout from "./Checkout"; 
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const user = JSON.parse(localStorage.getItem("user")); // Lấy thông tin người dùng từ localStorage
+
+  // Kiểm tra nếu người dùng chưa đăng nhập
+  if (!user) {
+    return <Navigate to="/login" />; // Chuyển hướng đến trang đăng nhập nếu chưa đăng nhập
+  }
 
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
-        const response = await apiClient.get("/api/carts");
+        const response = await apiClient.get("/carts", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // Thêm token vào tiêu đề
+          },
+        });
         setCartItems(response.data.cart_items);
       } catch (error) {
         message.error("Có lỗi xảy ra khi tải giỏ hàng.");
@@ -26,7 +37,10 @@ const Cart = () => {
 
   const handleRemoveItem = async (productVariantId) => {
     try {
-      await apiClient.delete("/api/carts/item", {
+      await apiClient.delete("/carts/item", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // Thêm token vào tiêu đề
+        },
         data: { ProductVariantID: productVariantId },
       });
       setCartItems(cartItems.filter(item => item.ProductVariantID !== productVariantId));
@@ -38,7 +52,10 @@ const Cart = () => {
 
   const handleUpdateItem = async (productVariantId, quantity) => {
     try {
-      await apiClient.put("/api/carts", {
+      await apiClient.put("/carts", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // Thêm token vào tiêu đề
+        },
         ProductVariantID: productVariantId,
         Quantity: quantity,
       });
@@ -52,8 +69,8 @@ const Cart = () => {
   };
 
   const totalAmount = cartItems.reduce((total, item) => {
-    const price = item.product_variant?.Price || 0; // Lấy giá đúng
-    const quantity = item.Quantity || 0; // Số lượng mặc định nếu không có
+    const price = item.product_variant?.Price || 0;
+    const quantity = item.Quantity || 0;
     return total + (price * quantity);
   }, 0);
 
@@ -133,8 +150,8 @@ const Cart = () => {
                     </div>
                   </div>
                   <hr />
+                  <Checkout cartItems={cartItems} totalAmount={totalAmount} userId={user.UserID} /> {/* Sử dụng user.UserID */}
                 </section>
-                <button className="tw-bg-[#99CCD0] tw-text-white tw-font-medium tw-px-4 tw-h-12 tw-uppercase tw-cursor-pointer tw-w-full tw-mt-6">Thanh toán</button>
                 <Link className="tw-flex tw-items-center tw-justify-center tw-gap-x-2 tw-text-[#1A1C20] tw-mt-6">
                   <div className="tw-text-sm tw-text-[#1A1C20]"><i className="fa-solid fa-chevron-left"></i></div>
                   <p className="tw-m-0 tw-text-[#1A1C20] tw-font-normal">Quay lại mua hàng</p>

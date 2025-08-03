@@ -8,7 +8,7 @@ use App\Models\ProductVariant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon; // Đảm bảo Carbon được import để sử dụng now() hoặc Carbon::now()
-
+use App\Models\CartItem;
 class CartController extends Controller
 {
     /**
@@ -224,6 +224,13 @@ class CartController extends Controller
         }
 
         try {
+            $cartItems = Cart::where('UserID', $userId)
+                             ->with(['productVariant.product', 'productVariant.attributes.attribute'])
+                             ->get();
+            foreach ($cartItems as $cartItem) {
+                CartItem::where('CartID', $cartItem->CartID)->delete();
+            }
+
             Cart::where('UserID', $userId)->delete();
 
             return response()->json([

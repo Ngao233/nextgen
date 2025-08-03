@@ -24,7 +24,7 @@ use App\Http\Controllers\Api\NewsApiController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PasswordResetController;
 use App\Http\Controllers\Api\DashboardController; // Đây là DashboardController public nếu có
-
+use App\Http\Controllers\Api\CheckoutController; 
 // Import các Controller từ namespace Admin (để dùng cho chức năng export và admin CRUD)
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController; // Import AdminCategoryController với alias
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController; // Import AdminDashboardController
@@ -79,7 +79,7 @@ Route::post('/users/login', [UserController::class, 'login']);
 Route::put('/users/{id}', [UserController::class, 'update']);
 Route::delete('/users/{id}', [UserController::class, 'destroy']);
 
-
+Route::middleware('auth:sanctum')->put('/checkout/{userId}', [CheckoutController::class, 'checkout']);
 // Product routes - chỉ dùng apiResource, không dùng prefix group
 Route::get('products/search', [ProductController::class, 'search']); // Tuyến đường tìm kiếm sản phẩm
 Route::apiResource('products', ProductController::class); // Tạo các tuyến đường RESTful cho sản phẩm

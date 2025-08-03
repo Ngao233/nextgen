@@ -43,4 +43,8 @@ class Cart extends Model
     {
         return $this->hasMany(CartItem::class, 'CartID', 'CartID');
     }
+        public function productVariant()
+    {
+        return $this->belongsTo(ProductVariant::class, 'ProductVariantID'); // Thay 'ProductVariantID' bằng khóa ngoại thực tế trong bảng Cart
+    }
 }

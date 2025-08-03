@@ -8,7 +8,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { favoriteApi } from "../../api/favoriteApi";
 
 const addToCartFn = async ({ variantId, quantity }) => {
-  const response = await apiClient.post("/api/carts", {
+  const response = await apiClient.post("/carts", {
     ProductVariantID: variantId,
     Quantity: quantity,
   });

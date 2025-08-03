@@ -62,8 +62,8 @@ const App = () => {
             { path: "reset-password", element: <ResetPassword /> },
             { path: "products", element: <Products /> },
             { path: "products/:id", element: <ProductDetail /> },
-            { path: "cart", element: <Cart /> },
-            { path: "checkout", element: <Checkout /> },
+            { path: "cart", element: <ProtectedRoute><Cart /></ProtectedRoute> }, // Bảo vệ route
+            { path: "checkout", element: <ProtectedRoute><Checkout /></ProtectedRoute> }, // Bảo vệ route
             { path: "thank-you", element: <ThankYou /> },
           ],
         },
@@ -77,8 +77,8 @@ const App = () => {
             { path: "products", element: <ProtectedRoute><AdminProduct /></ProtectedRoute> },
             { path: "productvariant", element: <ProtectedRoute><AdminProductVariant /></ProtectedRoute> },
             { path: "categories", element: <ProtectedRoute><AdminCategory /></ProtectedRoute> },
-            { path: "edit-category/:id", element: <ProtectedRoute><EditCategory/></ProtectedRoute> },
-            { path: "add-category", element: <ProtectedRoute><AddCategory  /></ProtectedRoute> },
+            { path: "edit-category/:id", element: <ProtectedRoute><EditCategory /></ProtectedRoute> },
+            { path: "add-category", element: <ProtectedRoute><AddCategory /></ProtectedRoute> },
             { path: "vouchers", element: <ProtectedRoute><AdminVoucher /></ProtectedRoute> },
             { path: "news", element: <ProtectedRoute><AdminNews /></ProtectedRoute> },
           ],
