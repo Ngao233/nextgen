@@ -74,4 +74,31 @@ export const addNews = (data) => apiClient.post('/news', data);
 export const updateNews = (data) => apiClient.put(`/news/${data.id}`, data);
 export const deleteNews = (id) => apiClient.delete(`/news/${id}`);
 export const selectNews = (id) => apiClient.get(`/news/${id}`);
+
+export const getOrders = () => apiClient.get('/orders');
+export const getOrderById = (id) => apiClient.get(`/orders/${id}`);
+export const updateOrder = (id, data) => apiClient.put(`/orders/${id}`, data);
+export const addOrder = (data) => apiClient.post('/orders', data);
+export const deleteOrder = (id) => apiClient.delete(`/orders/${id}`);
+
+
+// Hàm kiểm tra UserID
+export const validateUserId = async (userId) => {
+    try {
+        const response = await axios.get(`http://localhost:8000/api/users/${userId}`);
+        return response.data.success; // Giả sử API trả về success: true nếu tồn tại
+    } catch (error) {
+        return false; // Nếu có lỗi, trả về false
+    }
+};
+
+// Hàm kiểm tra PaymentID
+export const validatePaymentId = async (paymentId) => {
+    try {
+        const response = await axios.get(`http://localhost:8000/api/payment-gateways/${paymentId}`);
+        return response.data.success; // Giả sử API trả về success: true nếu tồn tại
+    } catch (error) {
+        return false; // Nếu có lỗi, trả về false
+    }
+};
 export default apiClient;

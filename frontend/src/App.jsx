@@ -22,7 +22,7 @@ import ResetPassword from "./pages/client/ResetPassword/ResetPassword";
 import AdminLayout from "./layouts/AdminLayout/AdminLayout";
 import Dashboard from "./pages/admin/Dashboard/AdminDashboard";
 import AdminUser from "./pages/admin/AdminUsers"; 
-import AdminOrder from "./pages/admin/AdminOrders"; 
+import AdminOrder from "./pages/admin/orders/AdminOrders"; 
 import AdminProduct from "./pages/admin/AdminProducts"; 
 import AdminProductVariant from "./pages/admin/ProductVariantList"; 
 import AdminCategory from "./pages/admin/categories/AdminCategory"; 
